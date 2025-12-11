@@ -2,10 +2,9 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>工业半轴区块链溯源展示</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
     <style>
         * {
             margin: 0;
@@ -18,233 +17,221 @@
             background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
             color: #333;
             line-height: 1.6;
-            padding: 20px;
+            padding: 15px;
             min-height: 100vh;
+            -webkit-text-size-adjust: 100%;
         }
         
         .container {
             max-width: 1200px;
             margin: 0 auto;
             background: white;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
             overflow: hidden;
-            padding: 30px;
+            padding: 20px;
         }
         
         header {
             text-align: center;
-            margin-bottom: 40px;
-            padding-bottom: 20px;
-            border-bottom: 3px solid #3498db;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #3498db;
             position: relative;
         }
         
         header::after {
             content: '';
             position: absolute;
-            bottom: -3px;
+            bottom: -2px;
             left: 50%;
             transform: translateX(-50%);
-            width: 100px;
-            height: 3px;
+            width: 80px;
+            height: 2px;
             background: #2ecc71;
         }
         
         h1 {
             color: #2c3e50;
-            margin-bottom: 15px;
-            font-size: 2.4rem;
+            margin-bottom: 10px;
+            font-size: 1.8rem;
             font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
         
         .subtitle {
             color: #7f8c8d;
-            font-size: 1.2rem;
-            max-width: 800px;
+            font-size: 1rem;
+            max-width: 100%;
             margin: 0 auto;
+            padding: 0 10px;
         }
         
         .product-info {
             background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            margin-bottom: 40px;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.04);
+            margin-bottom: 30px;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            border-left: 5px solid #3498db;
+            flex-direction: column;
+            gap: 15px;
+            border-left: 4px solid #3498db;
         }
         
         .product-details h2 {
             color: #2c3e50;
             margin-bottom: 8px;
-            font-size: 1.6rem;
+            font-size: 1.4rem;
         }
         
         .product-details p {
             color: #555;
+            font-size: 0.95rem;
+            line-height: 1.5;
         }
         
         .product-id {
             font-family: 'Courier New', monospace;
             background: #2c3e50;
             color: white;
-            padding: 12px 20px;
-            border-radius: 8px;
+            padding: 10px 15px;
+            border-radius: 6px;
             font-weight: bold;
-            font-size: 1.1rem;
-            letter-spacing: 1px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            font-size: 1rem;
+            letter-spacing: 0.5px;
+            box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            word-break: break-all;
         }
         
         .process-timeline {
             position: relative;
-            padding: 20px 0;
+            padding: 15px 0;
         }
         
         .process-timeline::before {
             content: '';
             position: absolute;
-            left: 50%;
+            left: 30px;
             top: 0;
             bottom: 0;
-            width: 4px;
+            width: 3px;
             background: linear-gradient(to bottom, #3498db, #2ecc71);
-            transform: translateX(-50%);
             border-radius: 2px;
         }
         
         .process-step {
-            display: flex;
-            margin-bottom: 50px;
+            display: block;
+            margin-bottom: 40px;
             position: relative;
-        }
-        
-        .process-step:nth-child(odd) {
-            flex-direction: row;
-        }
-        
-        .process-step:nth-child(even) {
-            flex-direction: row-reverse;
-        }
-        
-        .step-content {
-            flex: 1;
-            padding: 30px;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
-            position: relative;
-            z-index: 2;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        
-        .step-content:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
-        }
-        
-        .step-content::before {
-            content: '';
-            position: absolute;
-            top: 40px;
-            width: 0;
-            height: 0;
-            border-style: solid;
-        }
-        
-        .process-step:nth-child(odd) .step-content::before {
-            right: -15px;
-            border-width: 12px 0 12px 15px;
-            border-color: transparent transparent transparent white;
-        }
-        
-        .process-step:nth-child(even) .step-content::before {
-            left: -15px;
-            border-width: 12px 15px 12px 0;
-            border-color: transparent white transparent transparent;
+            margin-left: 60px;
         }
         
         .step-icon {
-            width: 70px;
-            height: 70px;
+            width: 60px;
+            height: 60px;
             background: #3498db;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 2rem;
+            font-size: 1.5rem;
             position: absolute;
-            left: 50%;
-            top: 30px;
-            transform: translateX(-50%);
+            left: -75px;
+            top: 20px;
             z-index: 3;
-            box-shadow: 0 0 0 8px #f8f9fa, 0 5px 15px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 0 0 6px #f8f9fa, 0 3px 10px rgba(0, 0, 0, 0.15);
+        }
+        
+        .step-content {
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.06);
+            position: relative;
+            z-index: 2;
+            border: 1px solid #f0f0f0;
         }
         
         .step-header {
             display: flex;
-            align-items: center;
-            margin-bottom: 20px;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 15px;
             padding-bottom: 15px;
-            border-bottom: 2px solid #f0f0f0;
+            border-bottom: 1px solid #f0f0f0;
         }
         
         .step-title {
-            font-size: 1.6rem;
+            font-size: 1.3rem;
             color: #2c3e50;
             font-weight: 600;
         }
         
         .step-date {
-            margin-left: auto;
             background: #ecf0f1;
-            padding: 8px 15px;
-            border-radius: 6px;
-            font-size: 0.95rem;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 0.85rem;
             color: #7f8c8d;
             font-weight: 500;
+            align-self: flex-start;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            margin-top: 5px;
         }
         
         .step-body {
             display: flex;
-            gap: 25px;
-            flex-wrap: wrap;
+            flex-direction: column;
+            gap: 20px;
         }
         
         .step-details {
-            flex: 1;
-            min-width: 300px;
+            width: 100%;
         }
         
         .detail-row {
             display: flex;
-            margin-bottom: 12px;
+            flex-direction: column;
+            margin-bottom: 10px;
             padding: 8px 0;
             border-bottom: 1px dashed #eee;
+            gap: 3px;
         }
         
         .detail-label {
             font-weight: 600;
-            min-width: 130px;
             color: #555;
+            font-size: 0.9rem;
         }
         
         .detail-value {
             color: #333;
+            font-size: 0.95rem;
+            word-break: break-word;
         }
         
         .step-image {
-            flex: 1;
-            min-width: 300px;
-            border-radius: 10px;
+            width: 100%;
+            border-radius: 8px;
             overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            height: 220px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            height: 180px;
             position: relative;
         }
         
@@ -252,11 +239,7 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.5s ease;
-        }
-        
-        .step-image:hover img {
-            transform: scale(1.05);
+            display: block;
         }
         
         .image-overlay {
@@ -266,72 +249,59 @@
             right: 0;
             background: rgba(0, 0, 0, 0.7);
             color: white;
-            padding: 10px;
-            font-size: 0.9rem;
+            padding: 8px;
+            font-size: 0.8rem;
             text-align: center;
         }
         
         .blockchain-info {
             background: linear-gradient(135deg, #f8f9fa 0%, #e8f6f3 100%);
-            padding: 20px;
-            border-radius: 10px;
-            border-left: 5px solid #2ecc71;
-            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #2ecc71;
+            margin-top: 15px;
         }
         
         .blockchain-header {
             display: flex;
             align-items: center;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
+            gap: 8px;
         }
         
         .blockchain-icon {
             color: #2ecc71;
-            margin-right: 10px;
-            font-size: 1.4rem;
+            font-size: 1.2rem;
         }
         
         .blockchain-title {
             font-weight: bold;
             color: #27ae60;
-            font-size: 1.2rem;
+            font-size: 1rem;
         }
         
         .blockchain-hash {
             font-family: 'Courier New', monospace;
             background: white;
-            padding: 12px;
-            border-radius: 8px;
-            font-size: 0.9rem;
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 0.8rem;
             word-break: break-all;
             border: 1px solid #ddd;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             color: #2c3e50;
+            line-height: 1.4;
         }
         
         .blockchain-note {
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             color: #666;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
         }
         
-        .status-badge {
-            display: inline-block;
-            padding: 6px 15px;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            font-weight: bold;
-            margin-left: 15px;
-        }
-        
-        .status-verified {
-            background: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-        
+        /* 步骤颜色 */
         .step-1 .step-icon { background: #e74c3c; }
         .step-2 .step-icon { background: #3498db; }
         .step-3 .step-icon { background: #f39c12; }
@@ -340,256 +310,503 @@
         
         footer {
             text-align: center;
-            margin-top: 60px;
-            padding-top: 25px;
-            border-top: 2px solid #eee;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
             color: #7f8c8d;
-            font-size: 0.95rem;
+            font-size: 0.85rem;
         }
         
         .footer-logo {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
-            margin-bottom: 15px;
+            gap: 8px;
+            margin-bottom: 10px;
             color: #3498db;
             font-weight: bold;
-            font-size: 1.1rem;
+            font-size: 1rem;
         }
         
-        @media (max-width: 992px) {
-            .process-timeline::before {
-                left: 40px;
-            }
-            
-            .process-step {
-                flex-direction: row !important;
-                margin-left: 80px;
-            }
-            
-            .step-icon {
-                left: -55px;
-                transform: none;
-            }
-            
-            .step-content::before {
-                left: -15px !important;
-                right: auto !important;
-                border-width: 12px 15px 12px 0 !important;
-                border-color: transparent white transparent transparent !important;
-            }
-            
-            .step-body {
-                flex-direction: column;
-            }
-        }
-        
-        @media (max-width: 768px) {
+        /* 桌面端适配 */
+        @media (min-width: 768px) {
             .container {
-                padding: 20px;
+                padding: 25px;
             }
             
             h1 {
-                font-size: 1.8rem;
+                font-size: 2rem;
             }
             
             .product-info {
-                flex-direction: column;
-                align-items: flex-start;
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+                padding: 25px;
             }
             
             .product-id {
-                margin-top: 15px;
-                font-size: 1rem;
+                font-size: 1.1rem;
+                padding: 12px 20px;
+            }
+            
+            .process-timeline::before {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+            
+            .process-step {
+                display: flex;
+                margin-left: 0;
+                margin-bottom: 60px;
+            }
+            
+            .process-step:nth-child(odd) {
+                flex-direction: row;
+            }
+            
+            .process-step:nth-child(even) {
+                flex-direction: row-reverse;
+            }
+            
+            .step-icon {
+                position: absolute;
+                left: 50%;
+                top: 20px;
+                transform: translateX(-50%);
+                width: 70px;
+                height: 70px;
+                font-size: 1.8rem;
             }
             
             .step-content {
-                padding: 20px;
+                width: 45%;
+                padding: 25px;
             }
             
-            .step-title {
-                font-size: 1.4rem;
+            .process-step:nth-child(odd) .step-content {
+                margin-left: 5%;
+            }
+            
+            .process-step:nth-child(even) .step-content {
+                margin-right: 5%;
+            }
+            
+            .step-header {
+                flex-direction: row;
+                align-items: center;
+            }
+            
+            .step-date {
+                margin-left: auto;
+            }
+            
+            .step-body {
+                flex-direction: row;
+            }
+            
+            .step-details {
+                width: 50%;
+            }
+            
+            .step-image {
+                width: 50%;
+                height: 200px;
             }
             
             .detail-row {
-                flex-direction: column;
-                gap: 5px;
+                flex-direction: row;
+                align-items: center;
             }
             
             .detail-label {
-                min-width: auto;
+                min-width: 120px;
             }
+        }
+        
+        /* 防止文本溢出 */
+        .detail-value, .blockchain-hash, .product-id {
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+            hyphens: auto;
+        }
+        
+        /* 触摸友好 */
+        .step-content, .product-id, .status-badge {
+            transition: all 0.2s ease;
+        }
+        
+        .step-content:active {
+            transform: scale(0.98);
         }
     </style>
 </head>
 <body>
-    <div id="app">
-        <div class="container">
-            <header>
-                <h1><i class="fas fa-industry"></i> 工业半轴区块链溯源流程</h1>
-                <p class="subtitle">全程可视化追踪，基于区块链技术的不可篡改溯源体系</p>
-            </header>
-            
-            <div class="product-info">
-                <div class="product-details">
-                    <h2>工业半轴 - 全程溯源</h2>
-                    <p>产品型号：AX-2025-085 | 材质：42CrMoA合金钢 | 规格：Φ85×1200mm | 承载能力：8.5吨</p>
-                </div>
-                <div class="product-id">溯源编号：{{ productId }}</div>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-industry"></i> 工业半轴区块链溯源流程</h1>
+            <p class="subtitle">全程可视化追踪，基于区块链技术的不可篡改溯源体系</p>
+        </header>
+        
+        <div class="product-info">
+            <div class="product-details">
+                <h2>工业半轴 - 全程溯源</h2>
+                <p>产品型号：AX-2025-085 | 材质：42CrMoA合金钢 | 规格：Φ85×1200mm | 承载能力：8.5吨</p>
             </div>
-            
-            <div class="process-timeline">
-                <!-- 步骤1：原材料 -->
-                <div class="process-step step-1" v-for="step in steps" :key="step.id" :class="'step-' + step.id">
-                    <div class="step-icon">
-                        <i :class="step.icon"></i>
-                    </div>
-                    <div class="step-content">
-                        <div class="step-header">
-                            <h3 class="step-title">{{ step.title }}</h3>
-                            <div class="step-date">{{ step.date }}</div>
-                            <span class="status-badge status-verified">区块链已验证</span>
-                        </div>
-                        
-                        <div class="step-body">
-                            <div class="step-details">
-                                <div class="detail-row" v-for="detail in step.details" :key="detail.label">
-                                    <div class="detail-label">{{ detail.label }}：</div>
-                                    <div class="detail-value">{{ detail.value }}</div>
-                                </div>
-                            </div>
-                            
-                            <div class="step-image">
-                                <img :src="step.image" :alt="step.title">
-                                <div class="image-overlay">{{ step.imageCaption }}</div>
-                            </div>
-                        </div>
-                        
-                        <div class="blockchain-info">
-                            <div class="blockchain-header">
-                                <i class="fas fa-link blockchain-icon"></i>
-                                <div class="blockchain-title">区块链存证信息</div>
-                            </div>
-                            <div class="blockchain-hash">
-                                {{ step.blockchainHash }}
-                            </div>
-                            <div class="blockchain-note">
-                                <i class="fas fa-shield-alt"></i>
-                                {{ step.blockchainNote }}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <footer>
-                <div class="footer-logo">
-                    <i class="fas fa-link"></i>
-                    <span>工业半轴区块链溯源平台</span>
-                </div>
-                <p>© 2026 工业半轴全流程区块链溯源系统 | 基于Hyperledger Fabric区块链技术</p>
-                <p style="margin-top: 10px; font-size: 0.9rem;">所有生产环节数据均已上链存证，确保信息不可篡改，全程可追溯</p>
-            </footer>
+            <div class="product-id">溯源编号：TRACE-20230815-085-BC</div>
         </div>
+        
+        <div class="process-timeline">
+            <!-- 步骤1：原材料 -->
+            <div class="process-step step-1">
+                <div class="step-icon"><i class="fas fa-mountain"></i></div>
+                <div class="step-content">
+                    <div class="step-header">
+                        <h3 class="step-title">原材料采购与检验</h3>
+                        <div class="step-date">2025-11-06</div>
+                        <span class="status-badge">区块链已验证</span>
+                    </div>
+                    
+                    <div class="step-body">
+                        <div class="step-details">
+                            <div class="detail-row">
+                                <div class="detail-label">供应商：</div>
+                                <div class="detail-value">鞍山钢铁股份有限公司</div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-label">材料型号：</div>
+                                <div class="detail-value">42CrMoA合金钢</div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-label">采购批次：</div>
+                                <div class="detail-value">SM20230815042</div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-label">材料强度：</div>
+                                <div class="detail-value">抗拉强度≥1080MPa</div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-label">质检结果：</div>
+                                <div class="detail-value">合格，化学成分与机械性能达标</div>
+                            </div>
+                        </div>
+                        
+                        <div class="step-image">
+                            <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=800&q=80&auto=format&fit=crop" alt="原材料采购与检验">
+                            <div class="image-overlay">鞍钢优质合金钢原料仓库</div>
+                        </div>
+                    </div>
+                    
+                    <div class="blockchain-info">
+                        <div class="blockchain-header">
+                            <i class="fas fa-link blockchain-icon"></i>
+                            <div class="blockchain-title">区块链存证信息</div>
+                        </div>
+                        <div class="blockchain-hash">
+                            0x8f3a1b7c5e9d2f4a6c8b0e5d7f9a2b1c3e6d8f0a4b7c9e1d3f5a7b9c2e4d6f8a0
+                        </div>
+                        <div class="blockchain-note">
+                            <i class="fas fa-shield-alt"></i>
+                            原材料信息已永久记录在区块链，包含供应商资质、检验报告与批次信息
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 步骤2：锻造成型 -->
+            <div class="process-step step-2">
+                <div class="step-icon"><i class="fas fa-fire"></i></div>
+                <div class="step-content">
+                    <div class="step-header">
+                        <h3 class="step-title">锻造成型工艺</h3>
+                        <div class="step-date">2025-11-08</div>
+                        <span class="status-badge">区块链已验证</span>
+                    </div>
+                    
+                    <div class="step-body">
+                        <div class="step-details">
+                            <div class="detail-row">
+                                <div class="detail-label">生产车间：</div>
+                                <div class="detail-value">一车间</div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-label">设备型号：</div>
+                                <div class="detail-value">3000T液压锻压机</div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-label">锻造温度：</div>
+                                <div class="detail-value">1150°C ± 20°C</div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-label">保温时间：</div>
+                                <div class="detail-value">2小时</div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-label">质检结果：</div>
+                                <div class="detail-value">合格，无裂纹、折叠等缺陷</div>
+                            </div>
+                        </div>
+                        
+                        <div class="step-image">
+                            <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=800&q=80&auto=format&fit=crop" alt="锻造成型工艺">
+                            <div class="image-overlay">3000T液压锻压机正在进行半轴锻造</div>
+                        </div>
+                    </div>
+                    
+                    <div class="blockchain-info">
+                        <div class="blockchain-header">
+                            <i class="fas fa-link blockchain-icon"></i>
+                            <div class="blockchain-title">区块链存证信息</div>
+                        </div>
+                        <div class="blockchain-hash">
+                            0x5d9f2c4a8b7e1d3f6a9c0b5e8d2f4a7b1c3e6d9f0a2b4c6e8d1f3a5b7c9e2d4f6
+                        </div>
+                        <div class="blockchain-note">
+                            <i class="fas fa-shield-alt"></i>
+                            锻造工艺参数、操作人员与实时监控数据已上链，确保工艺一致性
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 步骤3：精密机加工 -->
+            <div class="process-step step-3">
+                <div class="step-icon"><i class="fas fa-cogs"></i></div>
+                <div class="step-content">
+                    <div class="step-header">
+                        <h3 class="step-title">精密机加工</h3>
+                        <div class="step-date">2025-11-11</div>
+                        <span class="status-badge">区块链已验证</span>
+                    </div>
+                    
+                    <div class="step-body">
+                        <div class="step-details">
+                            <div class="detail-row">
+                                <div class="detail-label">加工车间：</div>
+                                <div class="detail-value">二车间</div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-label">设备型号：</div>
+                                <div class="detail-value">DMG五轴联动加工中心</div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-label">加工精度：</div>
+                                <div class="detail-value">IT6级，误差≤0.02mm</div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-label">表面粗糙度：</div>
+                                <div class="detail-value">Ra≤1.6μm</div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-label">质检结果：</div>
+                                <div class="detail-value">合格，关键尺寸全部达标</div>
+                            </div>
+                        </div>
+                        
+                        <div class="step-image">
+                            <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=800&q=80&auto=format&fit=crop" alt="精密机加工">
+                            <div class="image-overlay">五轴加工中心进行半轴精密加工</div>
+                        </div>
+                    </div>
+                    
+                    <div class="blockchain-info">
+                        <div class="blockchain-header">
+                            <i class="fas fa-link blockchain-icon"></i>
+                            <div class="blockchain-title">区块链存证信息</div>
+                        </div>
+                        <div class="blockchain-hash">
+                            0x3b7e9d1f5a8c2e4d6f9a1b3c5e7d0f2a4b6c8e1d3f5a7b9c2e4d6f8a0b2c4e6
+                        </div>
+                        <div class="blockchain-note">
+                            <i class="fas fa-shield-alt"></i>
+                            加工参数、刀具信息与在线检测数据实时上链，确保加工质量可追溯
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 步骤4：热处理 -->
+            <div class="process-step step-4">
+                <div class="step-icon"><i class="fas fa-temperature-high"></i></div>
+                <div class="step-content">
+                    <div class="step-header">
+                        <h3 class="step-title">热处理强化</h3>
+                        <div class="step-date">2025-11-15</div>
+                        <span class="status-badge">区块链已验证</span>
+                    </div>
+                    
+                    <div class="step-body">
+                        <div class="step-details">
+                            <div class="detail-row">
+                                <div class="detail-label">处理车间：</div>
+                                <div class="detail-value">三车间</div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-label">处理工艺：</div>
+                                <div class="detail-value">淬火+高温回火</div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-label">表面硬度：</div>
+                                <div class="detail-value">HRC 28-32，均匀性达标</div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-label">金相组织：</div>
+                                <div class="detail-value">回火索氏体，组织均匀</div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-label">质检结果：</div>
+                                <div class="detail-value">合格，力学性能全面达标</div>
+                            </div>
+                        </div>
+                        
+                        <div class="step-image">
+                            <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=800&q=80&auto=format&fit=crop" alt="热处理强化">
+                            <div class="image-overlay">热处理车间淬火工艺现场</div>
+                        </div>
+                    </div>
+                    
+                    <div class="blockchain-info">
+                        <div class="blockchain-header">
+                            <i class="fas fa-link blockchain-icon"></i>
+                            <div class="blockchain-title">区块链存证信息</div>
+                        </div>
+                        <div class="blockchain-hash">
+                            0x9c2e4d6f8a0b2c4e6d8f1a3b5c7e9d2f4a6c8b0e5d7f9a1b3c5e7d0f2a4b6c8
+                        </div>
+                        <div class="blockchain-note">
+                            <i class="fas fa-shield-alt"></i>
+                            热处理工艺曲线、炉温监控与金相检验结果已上链存证
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 步骤5：成品检验 -->
+            <div class="process-step step-5">
+                <div class="step-icon"><i class="fas fa-truck-loading"></i></div>
+                <div class="step-content">
+                    <div class="step-header">
+                        <h3 class="step-title">成品检验与出库</h3>
+                        <div class="step-date">2025-11-18</div>
+                        <span class="status-badge">区块链已验证</span>
+                    </div>
+                    
+                    <div class="step-body">
+                        <div class="step-details">
+                            <div class="detail-row">
+                                <div class="detail-label">终端客户：</div>
+                                <div class="detail-value">重型机械有限公司</div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-label">最终检验：</div>
+                                <div class="detail-value">全面性能测试通过</div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-label">包装方式：</div>
+                                <div class="detail-value">防锈油+防水膜+木箱包装</div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-label">物流单号：</div>
+                                <div class="detail-value">SF202308300852</div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-label">交付状态：</div>
+                                <div class="detail-value">已签收，客户验收合格</div>
+                            </div>
+                        </div>
+                        
+                        <div class="step-image">
+                            <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=800&q=80&auto=format&fit=crop" alt="成品检验与出库">
+                            <div class="image-overlay">成品半轴检验合格准备发货</div>
+                        </div>
+                    </div>
+                    
+                    <div class="blockchain-info">
+                        <div class="blockchain-header">
+                            <i class="fas fa-link blockchain-icon"></i>
+                            <div class="blockchain-title">区块链存证信息</div>
+                        </div>
+                        <div class="blockchain-hash">
+                            0xe1d3f5a7b9c2e4d6f8a0b2c4e6d9f1a3b5c7e0d2f4a6c8b0e5d7f9a1b3c5e7d0
+                        </div>
+                        <div class="blockchain-note">
+                            <i class="fas fa-shield-alt"></i>
+                            最终检验报告、物流信息与客户签收记录已永久存储于区块链
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <div class="footer-logo">
+                <i class="fas fa-link"></i>
+                <span>工业半轴区块链溯源平台</span>
+            </div>
+            <p>© 2026 工业半轴全流程区块链溯源系统 | 基于Hyperledger Fabric区块链技术</p>
+            <p style="margin-top: 8px; font-size: 0.8rem; color: #95a5a6;">
+                所有生产环节数据均已上链存证，确保信息不可篡改，全程可追溯
+            </p>
+        </footer>
     </div>
-
+    
     <script>
-        new Vue({
-            el: '#app',
-            data: {
-                productId: 'TRACE-20230815-085-BC',
-                steps: [
-                    {
-                        id: 1,
-                        title: '原材料采购与检验',
-                        date: '2025-11-06',
-                        icon: 'fas fa-mountain',
-                        image: 'https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=800&q=80',
-                        imageCaption: '鞍钢优质合金钢原料仓库',
-                        details: [
-                            { label: '供应商', value: '鞍山钢铁股份有限公司' },
-                            { label: '材料型号', value: '42CrMoA合金钢' },
-                            { label: '采购批次', value: 'SM20230815042' },
-                            { label: '材料强度', value: '抗拉强度≥1080MPa' },
-                            { label: '质检结果', value: '合格，化学成分与机械性能达标' }
-                        ],
-                        blockchainHash: '0x8f3a1b7c5e9d2f4a6c8b0e5d7f9a2b1c3e6d8f0a4b7c9e1d3f5a7b9c2e4d6f8a0',
-                        blockchainNote: '原材料信息已永久记录在区块链，包含供应商资质、检验报告与批次信息'
-                    },
-                    {
-                        id: 2,
-                        title: '锻造成型工艺',
-                        date: '2025-11-08',
-                        icon: 'fas fa-fire',
-                        image: 'https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=800&q=80',
-                        imageCaption: '3000T液压锻压机正在进行半轴锻造',
-                        details: [
-                            { label: '生产车间', value: '一车间' },
-                            { label: '设备型号', value: '3000T液压锻压机' },
-                            { label: '锻造温度', value: '1150°C ± 20°C' },
-                            { label: '保温时间', value: '2小时' },
-                            { label: '质检结果', value: '合格，无裂纹、折叠等缺陷' }
-                        ],
-                        blockchainHash: '0x5d9f2c4a8b7e1d3f6a9c0b5e8d2f4a7b1c3e6d9f0a2b4c6e8d1f3a5b7c9e2d4f6',
-                        blockchainNote: '锻造工艺参数、操作人员与实时监控数据已上链，确保工艺一致性'
-                    },
-                    {
-                        id: 3,
-                        title: '精密机加工',
-                        date: '2025-11-11',
-                        icon: 'fas fa-cogs',
-                        image: 'https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=800&q=80',
-                        imageCaption: '五轴加工中心进行半轴精密加工',
-                        details: [
-                            { label: '加工车间', value: '二车间' },
-                            { label: '设备型号', value: 'DMG五轴联动加工中心' },
-                            { label: '加工精度', value: 'IT6级，误差≤0.02mm' },
-                            { label: '表面粗糙度', value: 'Ra≤1.6μm' },
-                            { label: '质检结果', value: '合格，关键尺寸全部达标' }
-                        ],
-                        blockchainHash: '0x3b7e9d1f5a8c2e4d6f9a1b3c5e7d0f2a4b6c8e1d3f5a7b9c2e4d6f8a0b2c4e6',
-                        blockchainNote: '加工参数、刀具信息与在线检测数据实时上链，确保加工质量可追溯'
-                    },
-                    {
-                        id: 4,
-                        title: '热处理强化',
-                        date: '2025-11-15',
-                        icon: 'fas fa-temperature-high',
-                        image: 'https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=800&q=80',
-                        imageCaption: '热处理车间淬火工艺现场',
-                        details: [
-                            { label: '处理车间', value: '三车间' },
-                            { label: '处理工艺', value: '淬火+高温回火' },
-                            { label: '表面硬度', value: 'HRC 28-32，均匀性达标' },
-                            { label: '金相组织', value: '回火索氏体，组织均匀' },
-                            { label: '质检结果', value: '合格，力学性能全面达标' }
-                        ],
-                        blockchainHash: '0x9c2e4d6f8a0b2c4e6d8f1a3b5c7e9d2f4a6c8b0e5d7f9a1b3c5e7d0f2a4b6c8',
-                        blockchainNote: '热处理工艺曲线、炉温监控与金相检验结果已上链存证'
-                    },
-                    {
-                        id: 5,
-                        title: '成品检验与出库',
-                        date: '2025-11-18',
-                        icon: 'fas fa-truck-loading',
-                        image: 'https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=800&q=80',
-                        imageCaption: '成品半轴检验合格准备发货',
-                        details: [
-                            { label: '终端客户', value: '四车间' },
-                            { label: '最终检验', value: '全面性能测试通过' },
-                            { label: '包装方式', value: '防锈油+防水膜+木箱包装' },
-                            { label: '物流单号', value: 'SF202308300852' },
-                            { label: '交付状态', value: '已签收，客户验收合格' }
-                        ],
-                        blockchainHash: '0xe1d3f5a7b9c2e4d6f8a0b2c4e6d9f1a3b5c7e0d2f4a6c8b0e5d7f9a1b3c5e7d0',
-                        blockchainNote: '最终检验报告、物流信息与客户签收记录已永久存储于区块链'
+        // 添加简单的交互效果
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('工业半轴溯源页面加载完成 - 优化版');
+            
+            // 添加点击反馈
+            const stepContents = document.querySelectorAll('.step-content');
+            stepContents.forEach(content => {
+                content.addEventListener('click', function() {
+                    this.style.boxShadow = '0 8px 25px rgba(0, 0, 0, 0.15)';
+                    setTimeout(() => {
+                        this.style.boxShadow = '';
+                    }, 200);
+                });
+            });
+            
+            // 自动调整图片大小以适应屏幕
+            function adjustImages() {
+                const images = document.querySelectorAll('.step-image img');
+                const screenWidth = window.innerWidth;
+                images.forEach(img => {
+                    if (screenWidth < 768) {
+                        img.style.objectFit = 'cover';
+                        img.style.height = '180px';
+                    } else {
+                        img.style.objectFit = 'cover';
+                        img.style.height = '200px';
                     }
-                ]
-            },
-            mounted() {
-                console.log('工业半轴溯源页面加载完成');
+                });
             }
+            
+            // 初始调整和窗口大小变化时调整
+            adjustImages();
+            window.addEventListener('resize', adjustImages);
+            
+            // 添加滚动动画效果
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+            
+            // 观察所有步骤
+            document.querySelectorAll('.process-step').forEach(step => {
+                step.style.opacity = '0';
+                step.style.transform = 'translateY(20px)';
+                step.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                observer.observe(step);
+            });
         });
     </script>
 </body>
