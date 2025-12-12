@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="工业半轴区块链溯源展示平台，全程可视化追踪生产流程">
     <title>工业半轴区块链溯源展示</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -20,6 +21,7 @@
             padding: 15px;
             min-height: 100vh;
             -webkit-text-size-adjust: 100%;
+            -webkit-tap-highlight-color: transparent;
         }
         
         .container {
@@ -60,6 +62,7 @@
             align-items: center;
             justify-content: center;
             gap: 10px;
+            flex-wrap: wrap;
         }
         
         .subtitle {
@@ -68,6 +71,7 @@
             max-width: 100%;
             margin: 0 auto;
             padding: 0 10px;
+            line-height: 1.5;
         }
         
         .product-info {
@@ -122,6 +126,7 @@
             width: 3px;
             background: linear-gradient(to bottom, #3498db, #2ecc71);
             border-radius: 2px;
+            z-index: 1;
         }
         
         .process-step {
@@ -129,6 +134,7 @@
             margin-bottom: 40px;
             position: relative;
             margin-left: 60px;
+            z-index: 2;
         }
         
         .step-icon {
@@ -218,6 +224,7 @@
             font-weight: 600;
             color: #555;
             font-size: 0.9rem;
+            flex-shrink: 0;
         }
         
         .detail-value {
@@ -233,6 +240,7 @@
             box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
             height: 180px;
             position: relative;
+            background-color: #f5f5f5;
         }
         
         .step-image img {
@@ -240,6 +248,7 @@
             height: 100%;
             object-fit: cover;
             display: block;
+            transition: transform 0.3s ease;
         }
         
         .image-overlay {
@@ -252,6 +261,7 @@
             padding: 8px;
             font-size: 0.8rem;
             text-align: center;
+            z-index: 2;
         }
         
         .blockchain-info {
@@ -297,8 +307,9 @@
             font-size: 0.8rem;
             color: #666;
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             gap: 6px;
+            line-height: 1.4;
         }
         
         /* 步骤颜色 */
@@ -326,6 +337,16 @@
             color: #3498db;
             font-weight: bold;
             font-size: 1rem;
+        }
+        
+        /* 图片加载状态 */
+        .image-loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: #888;
+            font-size: 0.9rem;
         }
         
         /* 桌面端适配 */
@@ -424,6 +445,49 @@
             }
         }
         
+        /* 手机端优化 */
+        @media (max-width: 480px) {
+            .container {
+                padding: 15px;
+                border-radius: 8px;
+            }
+            
+            h1 {
+                font-size: 1.5rem;
+            }
+            
+            .product-info {
+                padding: 15px;
+            }
+            
+            .step-content {
+                padding: 15px;
+            }
+            
+            .step-icon {
+                width: 50px;
+                height: 50px;
+                font-size: 1.2rem;
+                left: -65px;
+            }
+            
+            .process-timeline::before {
+                left: 25px;
+            }
+            
+            .process-step {
+                margin-left: 50px;
+            }
+            
+            .step-title {
+                font-size: 1.1rem;
+            }
+            
+            .step-image {
+                height: 150px;
+            }
+        }
+        
         /* 防止文本溢出 */
         .detail-value, .blockchain-hash, .product-id {
             overflow-wrap: break-word;
@@ -439,12 +503,38 @@
         .step-content:active {
             transform: scale(0.98);
         }
+        
+        /* 增强可访问性 */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+        
+        /* 打印样式 */
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            
+            .container {
+                box-shadow: none;
+                border-radius: 0;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1><i class="fas fa-industry"></i> 工业半轴区块链溯源流程</h1>
+            <h1><i class="fas fa-industry"></i> 工业半轴区块链溯源全流程</h1>
             <p class="subtitle">全程可视化追踪，基于区块链技术的不可篡改溯源体系</p>
         </header>
         
@@ -471,7 +561,7 @@
                         <div class="step-details">
                             <div class="detail-row">
                                 <div class="detail-label">供应商：</div>
-                                <div class="detail-value">鞍山钢铁股份有限公司</div>
+                                <div class="detail-value">某某钢材股份有限公司</div>
                             </div>
                             <div class="detail-row">
                                 <div class="detail-label">材料型号：</div>
@@ -492,7 +582,7 @@
                         </div>
                         
                         <div class="step-image">
-                            <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=800&q=80&auto=format&fit=crop" alt="原材料采购与检验">
+                            <img src="Y.webp" alt="原材料采购与检验" loading="lazy">
                             <div class="image-overlay">鞍钢优质合金钢原料仓库</div>
                         </div>
                     </div>
@@ -548,7 +638,7 @@
                         </div>
                         
                         <div class="step-image">
-                            <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=800&q=80&auto=format&fit=crop" alt="锻造成型工艺">
+                            <img src="one.jpg" alt="锻造成型工艺" loading="lazy">
                             <div class="image-overlay">3000T液压锻压机正在进行半轴锻造</div>
                         </div>
                     </div>
@@ -599,12 +689,12 @@
                             </div>
                             <div class="detail-row">
                                 <div class="detail-label">质检结果：</div>
-                                <div class="detail-value">合格，关键尺寸全部达标</div>
+                                <div class="detail-value">合格，关键尺寸全部正常</div>
                             </div>
                         </div>
                         
                         <div class="step-image">
-                            <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=800&q=80&auto=format&fit=crop" alt="精密机加工">
+                            <img src="two.png" alt="精密机加工" loading="lazy">
                             <div class="image-overlay">五轴加工中心进行半轴精密加工</div>
                         </div>
                     </div>
@@ -660,7 +750,7 @@
                         </div>
                         
                         <div class="step-image">
-                            <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=800&q=80&auto=format&fit=crop" alt="热处理强化">
+                            <img src="there.webp" alt="热处理强化" loading="lazy">
                             <div class="image-overlay">热处理车间淬火工艺现场</div>
                         </div>
                     </div>
@@ -695,7 +785,7 @@
                         <div class="step-details">
                             <div class="detail-row">
                                 <div class="detail-label">终端客户：</div>
-                                <div class="detail-value">重型机械有限公司</div>
+                                <div class="detail-value">某某机械有限公司</div>
                             </div>
                             <div class="detail-row">
                                 <div class="detail-label">最终检验：</div>
@@ -706,17 +796,17 @@
                                 <div class="detail-value">防锈油+防水膜+木箱包装</div>
                             </div>
                             <div class="detail-row">
-                                <div class="detail-label">物流单号：</div>
+                                <div class="detail-label">出库单号：</div>
                                 <div class="detail-value">SF202308300852</div>
                             </div>
                             <div class="detail-row">
-                                <div class="detail-label">交付状态：</div>
-                                <div class="detail-value">已签收，客户验收合格</div>
+                                <div class="detail-label">检验状态：</div>
+                                <div class="detail-value">正常</div>
                             </div>
                         </div>
                         
                         <div class="step-image">
-                            <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=800&q=80&auto=format&fit=crop" alt="成品检验与出库">
+                            <img src="four.png" alt="成品检验与出库" loading="lazy">
                             <div class="image-overlay">成品半轴检验合格准备发货</div>
                         </div>
                     </div>
@@ -753,7 +843,7 @@
     <script>
         // 添加简单的交互效果
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('工业半轴溯源页面加载完成 - 优化版');
+            console.log('工业半轴溯源页面加载完成 - GitHub优化版');
             
             // 添加点击反馈
             const stepContents = document.querySelectorAll('.step-content');
@@ -766,17 +856,41 @@
                 });
             });
             
+            // 图片悬停效果
+            const images = document.querySelectorAll('.step-image img');
+            images.forEach(img => {
+                img.addEventListener('mouseenter', function() {
+                    this.style.transform = 'scale(1.03)';
+                });
+                
+                img.addEventListener('mouseleave', function() {
+                    this.style.transform = 'scale(1)';
+                });
+            });
+            
+            // 图片加载失败处理
+            function handleImageError(img) {
+                img.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="200" viewBox="0 0 400 200"><rect width="400" height="200" fill="%23f0f0f0"/><text x="200" y="100" font-family="Arial" font-size="14" text-anchor="middle" fill="%23999">图片加载失败</text></svg>';
+                img.alt = '图片无法加载，请检查网络连接';
+            }
+            
+            images.forEach(img => {
+                img.addEventListener('error', function() {
+                    handleImageError(this);
+                });
+            });
+            
             // 自动调整图片大小以适应屏幕
             function adjustImages() {
-                const images = document.querySelectorAll('.step-image img');
                 const screenWidth = window.innerWidth;
                 images.forEach(img => {
+                    const parent = img.parentElement;
                     if (screenWidth < 768) {
+                        parent.style.height = '150px';
                         img.style.objectFit = 'cover';
-                        img.style.height = '180px';
                     } else {
+                        parent.style.height = '200px';
                         img.style.objectFit = 'cover';
-                        img.style.height = '200px';
                     }
                 });
             }
@@ -806,6 +920,27 @@
                 step.style.transform = 'translateY(20px)';
                 step.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
                 observer.observe(step);
+            });
+            
+            // 移动端触摸优化
+            if ('ontouchstart' in window) {
+                document.body.classList.add('touch-device');
+                
+                // 防止iOS双击缩放
+                let lastTouchEnd = 0;
+                document.addEventListener('touchend', function(event) {
+                    const now = Date.now();
+                    if (now - lastTouchEnd <= 300) {
+                        event.preventDefault();
+                    }
+                    lastTouchEnd = now;
+                }, false);
+            }
+            
+            // 添加加载状态
+            window.addEventListener('load', function() {
+                document.body.classList.add('loaded');
+                console.log('页面所有资源已加载完成');
             });
         });
     </script>
