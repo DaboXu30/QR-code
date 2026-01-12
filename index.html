@@ -2,8 +2,10 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="description" content="工业半轴区块链溯源展示平台，全程可视化追踪生产流程">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>工业半轴区块链溯源展示</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -11,35 +13,41 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
         }
         
         body {
             background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
             color: #333;
             line-height: 1.6;
-            padding: 15px;
             min-height: 100vh;
             -webkit-text-size-adjust: 100%;
             -webkit-tap-highlight-color: transparent;
+            padding: 0;
+            margin: 0;
+            width: 100vw;
+            overflow-x: hidden;
         }
         
         .container {
-            max-width: 1200px;
-            margin: 0 auto;
+            max-width: 100%;
+            margin: 0;
             background: white;
-            border-radius: 12px;
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
             overflow: hidden;
-            padding: 20px;
+            padding: 0;
+            min-height: 100vh;
+            width: 100%;
         }
         
         header {
             text-align: center;
             margin-bottom: 30px;
-            padding-bottom: 15px;
+            padding: 30px 20px 15px;
             border-bottom: 2px solid #3498db;
             position: relative;
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+            color: white;
         }
         
         header::after {
@@ -54,20 +62,20 @@
         }
         
         h1 {
-            color: #2c3e50;
+            color: white;
             margin-bottom: 10px;
-            font-size: 1.8rem;
+            font-size: 2.2rem;
             font-weight: 700;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 15px;
             flex-wrap: wrap;
         }
         
         .subtitle {
-            color: #7f8c8d;
-            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.2rem;
             max-width: 100%;
             margin: 0 auto;
             padding: 0 10px;
@@ -76,25 +84,26 @@
         
         .product-info {
             background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            padding: 20px;
-            border-radius: 10px;
+            padding: 25px;
+            border-radius: 0;
             box-shadow: 0 3px 10px rgba(0, 0, 0, 0.04);
             margin-bottom: 30px;
             display: flex;
             flex-direction: column;
-            gap: 15px;
-            border-left: 4px solid #3498db;
+            gap: 20px;
+            border-left: none;
+            border-bottom: 4px solid #3498db;
         }
         
         .product-details h2 {
             color: #2c3e50;
             margin-bottom: 8px;
-            font-size: 1.4rem;
+            font-size: 1.8rem;
         }
         
         .product-details p {
             color: #555;
-            font-size: 0.95rem;
+            font-size: 1.1rem;
             line-height: 1.5;
         }
         
@@ -102,10 +111,10 @@
             font-family: 'Courier New', monospace;
             background: #2c3e50;
             color: white;
-            padding: 10px 15px;
-            border-radius: 6px;
+            padding: 15px 20px;
+            border-radius: 8px;
             font-weight: bold;
-            font-size: 1rem;
+            font-size: 1.2rem;
             letter-spacing: 0.5px;
             box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
             text-align: center;
@@ -114,76 +123,100 @@
         
         .process-timeline {
             position: relative;
-            padding: 15px 0;
+            padding: 20px 0;
+            width: 100%;
         }
         
         .process-timeline::before {
             content: '';
             position: absolute;
-            left: 30px;
+            left: 50%;
+            transform: translateX(-50%);
             top: 0;
             bottom: 0;
-            width: 3px;
+            width: 4px;
             background: linear-gradient(to bottom, #3498db, #2ecc71);
             border-radius: 2px;
             z-index: 1;
         }
         
         .process-step {
-            display: block;
-            margin-bottom: 40px;
+            display: flex;
+            margin-bottom: 60px;
             position: relative;
-            margin-left: 60px;
             z-index: 2;
+            width: 100%;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        
+        .process-step:nth-child(odd) {
+            flex-direction: row;
+        }
+        
+        .process-step:nth-child(even) {
+            flex-direction: row-reverse;
         }
         
         .step-icon {
-            width: 60px;
-            height: 60px;
+            width: 80px;
+            height: 80px;
             background: #3498db;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 1.5rem;
+            font-size: 2rem;
             position: absolute;
-            left: -75px;
+            left: 50%;
             top: 20px;
+            transform: translateX(-50%);
             z-index: 3;
-            box-shadow: 0 0 0 6px #f8f9fa, 0 3px 10px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 0 0 8px #f8f9fa, 0 3px 15px rgba(0, 0, 0, 0.2);
         }
         
         .step-content {
-            padding: 20px;
+            width: 45%;
+            padding: 30px;
             background: white;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.06);
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
             position: relative;
             z-index: 2;
             border: 1px solid #f0f0f0;
+            margin-top: 10px;
+        }
+        
+        .process-step:nth-child(odd) .step-content {
+            margin-left: 5%;
+        }
+        
+        .process-step:nth-child(even) .step-content {
+            margin-right: 5%;
         }
         
         .step-header {
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            margin-bottom: 15px;
+            gap: 15px;
+            margin-bottom: 20px;
             padding-bottom: 15px;
             border-bottom: 1px solid #f0f0f0;
         }
         
         .step-title {
-            font-size: 1.3rem;
+            font-size: 1.6rem;
             color: #2c3e50;
             font-weight: 600;
         }
         
         .step-date {
             background: #ecf0f1;
-            padding: 6px 12px;
+            padding: 8px 15px;
             border-radius: 4px;
-            font-size: 0.85rem;
+            font-size: 1rem;
             color: #7f8c8d;
             font-weight: 500;
             align-self: flex-start;
@@ -191,9 +224,9 @@
         
         .status-badge {
             display: inline-block;
-            padding: 5px 12px;
+            padding: 6px 15px;
             border-radius: 15px;
-            font-size: 0.8rem;
+            font-size: 0.9rem;
             font-weight: bold;
             background: #d4edda;
             color: #155724;
@@ -203,42 +236,45 @@
         
         .step-body {
             display: flex;
-            flex-direction: column;
-            gap: 20px;
+            flex-direction: row;
+            gap: 25px;
         }
         
         .step-details {
-            width: 100%;
+            width: 50%;
         }
         
         .detail-row {
             display: flex;
-            flex-direction: column;
-            margin-bottom: 10px;
-            padding: 8px 0;
+            flex-direction: row;
+            margin-bottom: 12px;
+            padding: 10px 0;
             border-bottom: 1px dashed #eee;
-            gap: 3px;
+            gap: 10px;
+            align-items: center;
         }
         
         .detail-label {
             font-weight: 600;
             color: #555;
-            font-size: 0.9rem;
+            font-size: 1rem;
             flex-shrink: 0;
+            min-width: 140px;
         }
         
         .detail-value {
             color: #333;
-            font-size: 0.95rem;
+            font-size: 1.05rem;
             word-break: break-word;
+            flex: 1;
         }
         
         .step-image {
-            width: 100%;
-            border-radius: 8px;
+            width: 50%;
+            border-radius: 10px;
             overflow: hidden;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
-            height: 180px;
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.1);
+            height: 220px;
             position: relative;
             background-color: #f5f5f5;
         }
@@ -258,57 +294,57 @@
             right: 0;
             background: rgba(0, 0, 0, 0.7);
             color: white;
-            padding: 8px;
-            font-size: 0.8rem;
+            padding: 10px;
+            font-size: 0.9rem;
             text-align: center;
             z-index: 2;
         }
         
         .blockchain-info {
             background: linear-gradient(135deg, #f8f9fa 0%, #e8f6f3 100%);
-            padding: 15px;
-            border-radius: 8px;
+            padding: 20px;
+            border-radius: 10px;
             border-left: 4px solid #2ecc71;
-            margin-top: 15px;
+            margin-top: 20px;
         }
         
         .blockchain-header {
             display: flex;
             align-items: center;
-            margin-bottom: 10px;
-            gap: 8px;
+            margin-bottom: 12px;
+            gap: 10px;
         }
         
         .blockchain-icon {
             color: #2ecc71;
-            font-size: 1.2rem;
+            font-size: 1.4rem;
         }
         
         .blockchain-title {
             font-weight: bold;
             color: #27ae60;
-            font-size: 1rem;
+            font-size: 1.1rem;
         }
         
         .blockchain-hash {
             font-family: 'Courier New', monospace;
             background: white;
-            padding: 10px;
-            border-radius: 6px;
-            font-size: 0.8rem;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 0.9rem;
             word-break: break-all;
             border: 1px solid #ddd;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             color: #2c3e50;
             line-height: 1.4;
         }
         
         .blockchain-note {
-            font-size: 0.8rem;
+            font-size: 0.9rem;
             color: #666;
             display: flex;
             align-items: flex-start;
-            gap: 6px;
+            gap: 8px;
             line-height: 1.4;
         }
         
@@ -321,22 +357,23 @@
         
         footer {
             text-align: center;
-            margin-top: 40px;
-            padding-top: 20px;
+            margin-top: 50px;
+            padding: 30px 20px;
             border-top: 1px solid #eee;
             color: #7f8c8d;
-            font-size: 0.85rem;
+            font-size: 1rem;
+            background: #f8f9fa;
         }
         
         .footer-logo {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-            margin-bottom: 10px;
+            gap: 10px;
+            margin-bottom: 15px;
             color: #3498db;
             font-weight: bold;
-            font-size: 1rem;
+            font-size: 1.2rem;
         }
         
         /* 图片加载状态 */
@@ -346,145 +383,244 @@
             justify-content: center;
             height: 100%;
             color: #888;
-            font-size: 0.9rem;
+            font-size: 1rem;
         }
         
-        /* 桌面端适配 */
-        @media (min-width: 768px) {
+        /* iPad 专属优化 */
+        @media only screen and (min-width: 768px) and (max-width: 1024px) {
+            body {
+                padding: 0;
+                overflow-x: hidden;
+            }
+            
             .container {
-                padding: 25px;
+                border-radius: 0;
+                padding: 0;
+                min-height: 100vh;
+                width: 100vw;
+                margin: 0;
+                max-width: 100vw;
+            }
+            
+            header {
+                padding: 40px 20px 20px;
+                border-radius: 0;
             }
             
             h1 {
-                font-size: 2rem;
+                font-size: 2.4rem;
+            }
+            
+            .subtitle {
+                font-size: 1.3rem;
+                max-width: 80%;
             }
             
             .product-info {
-                flex-direction: row;
-                align-items: center;
-                justify-content: space-between;
-                padding: 25px;
+                margin: 0 20px 40px;
+                border-radius: 12px;
+                padding: 30px;
+            }
+            
+            .product-details h2 {
+                font-size: 2rem;
             }
             
             .product-id {
-                font-size: 1.1rem;
-                padding: 12px 20px;
+                font-size: 1.3rem;
+                padding: 15px 25px;
+            }
+            
+            .process-timeline {
+                padding: 40px 20px;
             }
             
             .process-timeline::before {
                 left: 50%;
-                transform: translateX(-50%);
             }
             
             .process-step {
-                display: flex;
-                margin-left: 0;
-                margin-bottom: 60px;
+                margin-bottom: 70px;
             }
             
-            .process-step:nth-child(odd) {
-                flex-direction: row;
+            .step-icon {
+                width: 90px;
+                height: 90px;
+                font-size: 2.2rem;
             }
             
-            .process-step:nth-child(even) {
-                flex-direction: row-reverse;
+            .step-content {
+                width: 46%;
+                padding: 35px;
+                margin-top: 20px;
+            }
+            
+            .process-step:nth-child(odd) .step-content {
+                margin-left: 4%;
+            }
+            
+            .process-step:nth-child(even) .step-content {
+                margin-right: 4%;
+            }
+            
+            .step-title {
+                font-size: 1.8rem;
+            }
+            
+            .step-date {
+                font-size: 1.1rem;
+                padding: 10px 18px;
+            }
+            
+            .step-body {
+                gap: 30px;
+            }
+            
+            .detail-label {
+                min-width: 150px;
+                font-size: 1.1rem;
+            }
+            
+            .detail-value {
+                font-size: 1.15rem;
+            }
+            
+            .step-image {
+                height: 250px;
+            }
+            
+            .blockchain-info {
+                padding: 25px;
+            }
+            
+            .blockchain-title {
+                font-size: 1.2rem;
+            }
+            
+            .blockchain-hash {
+                font-size: 1rem;
+                padding: 15px;
+            }
+            
+            footer {
+                padding: 40px 20px;
+                margin-top: 60px;
+            }
+            
+            .footer-logo {
+                font-size: 1.3rem;
+            }
+        }
+        
+        /* iPhone 和小屏设备 */
+        @media (max-width: 767px) {
+            body {
+                padding: 0;
+            }
+            
+            .container {
+                padding: 0;
+                border-radius: 0;
+                min-height: 100vh;
+            }
+            
+            header {
+                padding: 25px 15px 15px;
+            }
+            
+            h1 {
+                font-size: 1.6rem;
+            }
+            
+            .subtitle {
+                font-size: 1rem;
+            }
+            
+            .product-info {
+                margin: 0 10px 25px;
+                padding: 20px;
+                border-radius: 8px;
+            }
+            
+            .product-details h2 {
+                font-size: 1.4rem;
+            }
+            
+            .product-id {
+                font-size: 1rem;
+                padding: 12px 15px;
+            }
+            
+            .process-timeline {
+                padding: 20px 10px;
+            }
+            
+            .process-timeline::before {
+                left: 30px;
+            }
+            
+            .process-step {
+                flex-direction: column !important;
+                margin-bottom: 40px;
+                margin-left: 60px;
             }
             
             .step-icon {
                 position: absolute;
-                left: 50%;
+                left: -75px;
                 top: 20px;
-                transform: translateX(-50%);
-                width: 70px;
-                height: 70px;
-                font-size: 1.8rem;
-            }
-            
-            .step-content {
-                width: 45%;
-                padding: 25px;
-            }
-            
-            .process-step:nth-child(odd) .step-content {
-                margin-left: 5%;
-            }
-            
-            .process-step:nth-child(even) .step-content {
-                margin-right: 5%;
-            }
-            
-            .step-header {
-                flex-direction: row;
-                align-items: center;
-            }
-            
-            .step-date {
-                margin-left: auto;
-            }
-            
-            .step-body {
-                flex-direction: row;
-            }
-            
-            .step-details {
-                width: 50%;
-            }
-            
-            .step-image {
-                width: 50%;
-                height: 200px;
-            }
-            
-            .detail-row {
-                flex-direction: row;
-                align-items: center;
-            }
-            
-            .detail-label {
-                min-width: 120px;
-            }
-        }
-        
-        /* 手机端优化 */
-        @media (max-width: 480px) {
-            .container {
-                padding: 15px;
-                border-radius: 8px;
-            }
-            
-            h1 {
+                transform: none;
+                width: 60px;
+                height: 60px;
                 font-size: 1.5rem;
             }
             
-            .product-info {
-                padding: 15px;
-            }
-            
             .step-content {
-                padding: 15px;
+                width: 100%;
+                padding: 20px;
+                margin: 0;
             }
             
-            .step-icon {
-                width: 50px;
-                height: 50px;
-                font-size: 1.2rem;
-                left: -65px;
-            }
-            
-            .process-timeline::before {
-                left: 25px;
-            }
-            
-            .process-step {
-                margin-left: 50px;
+            .step-header {
+                flex-direction: column;
+                align-items: flex-start;
             }
             
             .step-title {
-                font-size: 1.1rem;
+                font-size: 1.3rem;
+            }
+            
+            .step-date {
+                align-self: flex-start;
+                margin-left: 0;
+            }
+            
+            .step-body {
+                flex-direction: column;
+            }
+            
+            .step-details {
+                width: 100%;
             }
             
             .step-image {
-                height: 150px;
+                width: 100%;
+                height: 180px;
+            }
+            
+            .detail-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 5px;
+            }
+            
+            .detail-label {
+                min-width: auto;
+            }
+            
+            footer {
+                padding: 25px 15px;
+                margin-top: 40px;
             }
         }
         
@@ -528,6 +664,22 @@
                 box-shadow: none;
                 border-radius: 0;
             }
+        }
+        
+        /* 防止iOS橡皮筋效果 */
+        html, body {
+            overscroll-behavior: none;
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        
+        /* 内容滚动区域 */
+        .container {
+            height: 100vh;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
         }
     </style>
 </head>
@@ -833,7 +985,7 @@
                 <span>工业半轴区块链溯源平台</span>
             </div>
             <p>© 2026 工业半轴全流程区块链溯源系统 | 基于Hyperledger Fabric区块链技术</p>
-            <p style="margin-top: 8px; font-size: 0.8rem; color: #95a5a6;">
+            <p style="margin-top: 8px; font-size: 0.9rem; color: #95a5a6;">
                 所有生产环节数据均已上链存证，确保信息不可篡改，全程可追溯
             </p>
         </footer>
@@ -842,7 +994,14 @@
     <script>
         // 添加简单的交互效果
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('工业半轴溯源页面加载完成 - GitHub优化版');
+            console.log('工业半轴溯源页面加载完成 - iPad优化版');
+            
+            // 防止iOS橡皮筋效果
+            document.body.addEventListener('touchmove', function(e) {
+                if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
+                    e.preventDefault();
+                }
+            }, { passive: false });
             
             // 添加点击反馈
             const stepContents = document.querySelectorAll('.step-content');
@@ -864,6 +1023,17 @@
                 
                 img.addEventListener('mouseleave', function() {
                     this.style.transform = 'scale(1)';
+                });
+                
+                // 触摸设备上的悬停效果
+                img.addEventListener('touchstart', function() {
+                    this.style.transform = 'scale(1.03)';
+                });
+                
+                img.addEventListener('touchend', function() {
+                    setTimeout(() => {
+                        this.style.transform = 'scale(1)';
+                    }, 300);
                 });
             });
             
@@ -887,8 +1057,12 @@
                     if (screenWidth < 768) {
                         parent.style.height = '150px';
                         img.style.objectFit = 'cover';
+                    } else if (screenWidth >= 768 && screenWidth <= 1024) {
+                        // iPad优化
+                        parent.style.height = '250px';
+                        img.style.objectFit = 'cover';
                     } else {
-                        parent.style.height = '200px';
+                        parent.style.height = '220px';
                         img.style.objectFit = 'cover';
                     }
                 });
@@ -915,9 +1089,6 @@
             
             // 观察所有步骤
             document.querySelectorAll('.process-step').forEach(step => {
-                step.style.opacity = '0';
-                step.style.transform = 'translateY(20px)';
-                step.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
                 observer.observe(step);
             });
             
@@ -941,6 +1112,37 @@
                 document.body.classList.add('loaded');
                 console.log('页面所有资源已加载完成');
             });
+            
+            // 适配iOS 12.5.7的特定优化
+            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+            if (isIOS) {
+                // 添加iOS特定样式
+                document.documentElement.style.height = '100%';
+                document.body.style.height = '100%';
+                
+                // 修复iOS输入框问题
+                const inputs = document.querySelectorAll('input, textarea');
+                inputs.forEach(input => {
+                    input.addEventListener('focus', function() {
+                        setTimeout(() => {
+                            window.scrollTo(0, this.offsetTop - 100);
+                        }, 100);
+                    });
+                });
+            }
+            
+            // 确保全屏显示
+            function ensureFullScreen() {
+                document.documentElement.style.width = '100vw';
+                document.documentElement.style.height = '100vh';
+                document.body.style.width = '100vw';
+                document.body.style.height = '100vh';
+                document.querySelector('.container').style.width = '100vw';
+                document.querySelector('.container').style.height = '100vh';
+            }
+            
+            ensureFullScreen();
+            window.addEventListener('resize', ensureFullScreen);
         });
     </script>
 </body>
